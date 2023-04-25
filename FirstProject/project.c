@@ -101,9 +101,9 @@ void hardCodedStore(book *bk)
     bk[1].price = 200;
     bk[2].price = 300;
     bk[3].price = 400;
-    bk[0].rating = 1.2;
-    bk[1].rating = 2.2;
-    bk[2].rating = 3.2;
+    bk[0].rating = 2.2;
+    bk[1].rating = 1.2;
+    bk[2].rating = 6.2;
     bk[3].rating = 4.2;
 }
 /*Function Defination of Displaying Data of Books*/
@@ -282,33 +282,41 @@ void updateBook(book *bk)
 void top3Books(book *bk)
 {
     int i;
+    book temp[20];
     char name1[20];
     char author1[20];
+    for(int i = 0 ; i<size ; i++){
+        temp[i].id = bk[i].id;
+        temp[i].price = bk[i].price;
+        temp[i].rating = bk[i].rating;
+        strcpy(temp[i].name , bk[i].name);
+        strcpy(temp[i].author , bk[i].author);
+    }
     for (i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
         {
-            if (bk[j].rating < bk[j + 1].rating)
+            if (temp[j].rating < temp[j + 1].rating)
             {
-                double temp = bk[j].rating;
-                bk[j].rating = bk[j + 1].rating;
-                bk[j + 1].rating = temp;
+                double temra = temp[j].rating;
+                temp[j].rating = temp[j + 1].rating;
+                temp[j + 1].rating = temra;
 
-                temp = bk[i].price;
-                bk[j].price = bk[j + 1].price;
-                bk[j + 1].price = temp;
+                double tempri = temp[i].price;
+                temp[j].price = temp[j + 1].price;
+                temp[j + 1].price = tempri;
 
-                int temp2 = bk[j].id;
-                bk[j].id = bk[j + 1].id;
-                bk[j + 1].id = temp2;
+                int tempid = temp[j].id;
+                temp[j].id = temp[j + 1].id;
+                temp[j + 1].id = tempid;
 
-                strcpy(name1, bk[j].name);
-                strcpy(bk[j].name, bk[j + 1].name);
-                strcpy(bk[j + 1].name, name1);
+                strcpy(name1, temp[j].name);
+                strcpy(temp[j].name, temp[j + 1].name);
+                strcpy(temp[j + 1].name, name1);
 
-                strcpy(author1, bk[j].author);
-                strcpy(bk[j].author, bk[j + 1].author);
-                strcpy(bk[j + 1].author, author1);
+                strcpy(author1, temp[j].author);
+                strcpy(temp[j].author, temp[j + 1].author);
+                strcpy(temp[j + 1].author, author1);
             }
         }
     }
@@ -319,7 +327,7 @@ void top3Books(book *bk)
         {
             printf("\n");
             printf("# book %d is => \n", i + 1);
-            display(i, bk);
+            display(i, temp);
         }
     }
     else
@@ -328,7 +336,7 @@ void top3Books(book *bk)
         {
             printf("\n");
             printf("# book %d is => \n", i + 1);
-            display(i, bk);
+            display(i, temp);
         }
         printf("\n|| -* THANK YOU *- ||\n");
         printf("---------------------");
@@ -350,8 +358,8 @@ void deleteBook(book *bk)
                 bk[j].id = bk[j + 1].id;
                 bk[j].rating = bk[j + 1].rating;
                 bk[j].price = bk[j + 1].price;
-                strcmp(bk[j].name, bk[j + 1].name);
-                strcmp(bk[j].author, bk[j + 1].author);
+                strcpy(bk[j].name, bk[j + 1].name);
+                strcpy(bk[j].author, bk[j + 1].author);
             }
             size--;
             printf("\nBook with Id %d is Successfully Deleted...\n", b_id);
